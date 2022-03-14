@@ -18,14 +18,35 @@ app.get('/', (req, res) => {
 
 app.get('/showAll', (req, res) => {
   pool.getConnection((err, connection) => {
-    if (err) throw err
+    if (err) res.status(500).send(err)
 
+    let sql = 'SELECT * FROM Students'
     console.log(`Connected as ID ${connection.threadId}`)
-    connection.query('SELECT * FROM Students', (err, records) => {
+    connection.query(sql, (err, records) => {
       connection.release()
       if (err) throw err
 
-      console.log('Data from Database:\n', records)
+      console.log('Data from Datavbase:\n', records)
+    })
+  })
+})
+
+app.post('/insertOne', (req, res) => {
+  pool.getConnection((err, connection) => {
+    console.log('========== insertOne ===========')
+    if (err) res.status(500).send(err)
+
+    console.log(req.query)
+    let { firstName, lastName, email } = req.query
+
+    console.log(firstName)
+    let sql = `INSERT INTO Students (firstName, lastName, email) VALUES ('${firstName}', '${lastName}', '${email}');`
+
+    let query = connection.query(sql, (err, record) => {
+      if (err) res.status(400).send(err)
+
+      console.log(`Record added:\n${query.sql}`)
+      res.status(201).send()
     })
   })
 })

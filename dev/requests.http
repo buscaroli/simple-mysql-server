@@ -1,0 +1,17 @@
+POST http://localhost:3000/insertOne HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "Matt",
+    "lastName": "Bus",
+    "email": "matt@mail.com"
+}
+
+###
+
+POST http://localhost:3000/insertOne
+  ?firstName=Matt
+  &lastName=Bus
+  &email=matt@email.com
+
+  ###
