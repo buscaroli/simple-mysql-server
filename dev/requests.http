@@ -1,13 +1,24 @@
-POST http://localhost:3000/insertOne HTTP/1.1
-content-type: application/json
+# POST http://localhost:3000/insertOne HTTP/1.1
+# content-type: application/json
 
-{
-    "firstName": "Matt",
-    "lastName": "Bus",
-    "email": "matt@mail.com"
-}
+# {
+#     "firstName": "Matt",
+#     "lastName": "Bus",
+#     "email": "matt@mail.com"
+# }
 
-###
+# ###
+
+# POST http://localhost:3000/insertOne HTTP/1.1
+# content-type: application/json
+
+# {
+#     "firstName": "John",
+#     "lastName": "Smith",
+#     "email": "john@mail.com"
+# }
+
+# ###
 
 POST http://localhost:3000/insertOne
   ?firstName=Matt
@@ -16,10 +27,46 @@ POST http://localhost:3000/insertOne
 
 ###
 
+POST http://localhost:3000/insertOne
+  ?firstName=Mel
+  &lastName=Dam
+  &email=mel@email.com
+
+###
+
+POST http://localhost:3000/insertOne
+  ?firstName=John
+  &lastName=Smith
+  &email=john@email.com
+
+###
+
 POST http://localhost:3000/findByID
-  ?studentID=2
+  ?studentID=1
   
 ###
 
 POST http://localhost:3000/findByID
   ?studentID=2000
+
+###
+
+DELETE http://localhost:3000/deleteOne
+  ?studentID=28
+
+###
+
+DELETE http://localhost:3000/deleteOne
+  ?studentID=2000
+
+###
+
+PUT http://localhost:3000/updateOne
+  ?firstName=Susan
+  &lastName=McCall
+  &email=susan@mail.com
+  &studentID=40
+
+###
+
+GET http://localhost:3000/showAll

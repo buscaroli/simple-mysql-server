@@ -54,7 +54,7 @@ app.post('/insertOne', (req, res) => {
 
 app.post('/findByID', (req, res) => {
   pool.getConnection((err, connection) => {
-    console.log('=========== findOne ===========')
+    console.log('=========== findByID ===========')
     if (err) res.status(500).send(err)
 
     let sql = `SELECT * FROM Students WHERE studentID = '${req.query.studentID}';`
@@ -62,13 +62,44 @@ app.post('/findByID', (req, res) => {
 
     let query = connection.query(sql, (err, record) => {
       if (err) {
-        res.status(400).send()
+        res.status(400).send(err)
       } else if (record[0] === undefined || record === []) {
-        res.status(404).send()
+        res.status(404).send(err)
       } else {
         console.log('Record Found:\n', query.sql)
         res.send(record[0])
       }
+    })
+  })
+})
+
+// TODO FIX ERROR HANDLING
+app.delete('/deleteOne', (req, res) => {
+  pool.getConnection((err, connection) => {
+    console.log('========== deleteOne ===========')
+    if (err) res.status(500).send(err)
+
+    let sql = `DELETE FROM Students WHERE studentID = '${req.query.studentID}';`
+    console.log(req.query.studentID)
+
+    let query = connection.query(sql, (err, record) => {
+      res.send()
+    })
+  })
+})
+
+// TODO FIX ERROR HANDLING
+app.put('/updateOne', (req, res) => {
+  pool.getConnection((err, connection) => {
+    console.log('========== updateOne ===========')
+    if (err) res.status(500).send(err)
+
+    let { firstName, lastName, email } = req.query
+
+    let sql = `UPDATE Students SET firstName = '${firstName}', lastName = '${lastName}', email = '${email}' WHERE studentID = '${req.query.studentID}';`
+
+    let query = connection.query(sql, (err, record) => {
+      res.send()
     })
   })
 })
