@@ -4,18 +4,12 @@ const mysql = require('mysql')
 const PORT = process.env.PORT || 3000
 
 const app = express()
-const db = mysql.createConnection({
+const pool = mysql.createPool({
   host: '127.0.0.1',
-  post: '3306',
+  port: '3306',
   user: 'newuser',
   password: 'newpassword',
   database: 'myDatabase',
-})
-
-db.connect((err) => {
-  if (err) throw err
-
-  console.log('Connected to the Database...')
 })
 
 app.get('/', (req, res) => {
@@ -23,11 +17,16 @@ app.get('/', (req, res) => {
 })
 
 app.get('/showAll', (req, res) => {
-  db.query('SELECT * from Students', (err, rows) => {
+  pool.getConnection((err, connection) => {
     if (err) throw err
 
-    console.log('The data from users table are: \n', rows)
-    // do not use db.end() as you shouldn't be closing the connection at every query!
+    console.log(`Connected as ID ${connection.threadId}`)
+    connection.query('SELECT * FROM Students', (err, records) => {
+      connection.release()
+      if (err) throw err
+
+      console.log('Data from Database:\n', records)
+    })
   })
 })
 
