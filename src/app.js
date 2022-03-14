@@ -22,11 +22,12 @@ app.get('/showAll', (req, res) => {
 
     let sql = 'SELECT * FROM Students'
     console.log(`Connected as ID ${connection.threadId}`)
-    connection.query(sql, (err, records) => {
+    let query = connection.query(sql, (err, records) => {
       connection.release()
       if (err) throw err
 
-      console.log('Data from Datavbase:\n', records)
+      console.log('Data from Database:\n', records)
+      res.send(records)
     })
   })
 })
@@ -47,6 +48,27 @@ app.post('/insertOne', (req, res) => {
 
       console.log(`Record added:\n${query.sql}`)
       res.status(201).send()
+    })
+  })
+})
+
+app.post('/findByID', (req, res) => {
+  pool.getConnection((err, connection) => {
+    console.log('=========== findOne ===========')
+    if (err) res.status(500).send(err)
+
+    let sql = `SELECT * FROM Students WHERE studentID = '${req.query.studentID}';`
+    console.log(req.query.studentID)
+
+    let query = connection.query(sql, (err, record) => {
+      if (err) {
+        res.status(400).send()
+      } else if (record[0] === undefined || record === []) {
+        res.status(404).send()
+      } else {
+        console.log('Record Found:\n', query.sql)
+        res.send(record[0])
+      }
     })
   })
 })

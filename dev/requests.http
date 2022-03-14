@@ -14,4 +14,12 @@ POST http://localhost:3000/insertOne
   &lastName=Bus
   &email=matt@email.com
 
-  ###
+###
+
+POST http://localhost:3000/findByID
+  ?studentID=2
+  
+###
+
+POST http://localhost:3000/findByID
+  ?studentID=2000
